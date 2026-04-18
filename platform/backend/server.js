@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.resolve(__dirname, '../data');
+const DATA_DIR = path.resolve(__dirname, '../frontend/src/data');
 
 const loadJSON = (name) => JSON.parse(fs.readFileSync(path.join(DATA_DIR, name), 'utf-8'));
 

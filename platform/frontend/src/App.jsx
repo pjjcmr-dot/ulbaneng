@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
-import HomePage from './pages/HomePage.jsx';
-import RoundsPage from './pages/RoundsPage.jsx';
-import RoundDetailPage from './pages/RoundDetailPage.jsx';
-import QuestionPage from './pages/QuestionPage.jsx';
-import TrendPage from './pages/TrendPage.jsx';
-import SearchPage from './pages/SearchPage.jsx';
+
+// 코드 스플리팅: 각 페이지를 lazy load하여 초기 번들 크기 축소
+// - TrendPage는 Recharts를 포함하므로 반드시 분리
+// - QuestionPage는 심화답안 데이터를 사용하므로 분리
+const HomePage = lazy(() => import('./pages/HomePage.jsx'));
+const RoundsPage = lazy(() => import('./pages/RoundsPage.jsx'));
+const RoundDetailPage = lazy(() => import('./pages/RoundDetailPage.jsx'));
+const QuestionPage = lazy(() => import('./pages/QuestionPage.jsx'));
+const TrendPage = lazy(() => import('./pages/TrendPage.jsx'));
+const SearchPage = lazy(() => import('./pages/SearchPage.jsx'));
+
+const PageLoading = () => (
+  <div className="loading">페이지 로딩 중...</div>
+);
 
 export default function App() {
   return (
@@ -25,14 +33,16 @@ export default function App() {
         </div>
       </header>
       <main className="container main">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/rounds" element={<RoundsPage />} />
-          <Route path="/rounds/:round" element={<RoundDetailPage />} />
-          <Route path="/questions/:id" element={<QuestionPage />} />
-          <Route path="/trends" element={<TrendPage />} />
-          <Route path="/search" element={<SearchPage />} />
-        </Routes>
+        <Suspense fallback={<PageLoading />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/rounds" element={<RoundsPage />} />
+            <Route path="/rounds/:round" element={<RoundDetailPage />} />
+            <Route path="/questions/:id" element={<QuestionPage />} />
+            <Route path="/trends" element={<TrendPage />} />
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+        </Suspense>
       </main>
       <footer className="app-footer">
         <div className="container">

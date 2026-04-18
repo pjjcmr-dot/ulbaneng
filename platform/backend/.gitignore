@@ -1,0 +1,31 @@
+# ─── Node / Express ───
+node_modules/
+
+# ─── 환경 변수 ───
+.env
+.env.local
+.env.*.local
+
+# ─── 로그 / 임시 ───
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.tmp/
+tmp/
+*.pid
+*.pid.lock
+
+# ─── 에디터 / OS ───
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# ─── 테스트 ───
+coverage/
+.nyc_output/
+
+# ─── 런타임 캐시 ───
+.cache/
