@@ -328,3 +328,148 @@ p  { margin: 8px 0; }
 .sidebar-card ul li { padding: 4px 0; font-size: 13px; }
 
 .loading { padding: 40px; text-align: center; color: var(--color-muted); }
+
+/* ────────────────────────────────────────────────
+   반응형: 태블릿 (1024px 이하)
+   ──────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .container { padding: 0 16px; }
+  .header-inner { padding: 12px 16px; }
+  .main { padding: 24px 16px; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  .grid-rounds { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .grid-stats { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+}
+
+/* ────────────────────────────────────────────────
+   반응형: 모바일 (768px 이하)
+   ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+  .container { padding: 0 12px; }
+
+  /* 헤더: 세로 배치 + 스크롤 가능한 네비 */
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .brand-kor { font-size: 17px; }
+  .brand-sub { font-size: 11px; }
+  .nav {
+    width: 100%;
+    overflow-x: auto;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-link {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  /* 메인·타이포 */
+  .main { padding: 16px 12px; }
+  h1 { font-size: 20px; }
+  h2 { font-size: 17px; margin: 20px 0 10px; }
+  h3 { font-size: 15px; }
+  .page-title { margin-bottom: 4px; }
+  .page-subtitle { font-size: 13px; margin-bottom: 16px; }
+
+  /* 카드·그리드 */
+  .card, .session-block, .chart-card, .stat-card { padding: 14px; }
+  .grid-rounds { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .grid-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .round-card { padding: 14px; }
+  .round-card .round-no { font-size: 22px; }
+  .stat-card .stat-value { font-size: 24px; }
+
+  /* 문제 목록 */
+  .question-item {
+    padding: 10px 4px;
+    gap: 8px;
+  }
+  .question-no {
+    width: 22px;
+    font-size: 13px;
+  }
+  .question-text { font-size: 13px; }
+  .question-meta { font-size: 11px; gap: 3px; }
+  .badge { font-size: 11px; padding: 1px 7px; }
+
+  /* 문제 상세 */
+  .question-header { padding: 14px; }
+  .question-header .q-text { font-size: 15px; }
+  .question-header .q-path { font-size: 12px; }
+
+  /* 답안 탭 */
+  .answer-tab { padding: 8px 12px; font-size: 13px; }
+  .answer-body { padding: 16px; font-size: 14px; line-height: 1.7; }
+  .answer-body h3 { font-size: 15px; }
+  .answer-body h4 { font-size: 13px; }
+
+  /* 차트 페이지 */
+  .chart-card h3 { font-size: 14px; }
+  .chart-hint { font-size: 11px; }
+
+  /* 검색·필터 */
+  .search-bar { padding: 10px 12px; font-size: 14px; }
+  .filter-row { gap: 6px; }
+  .filter-chip { padding: 5px 10px; font-size: 12px; }
+
+  /* 키워드 클라우드 */
+  .kw-chip { padding: 5px 10px; font-size: 12px; }
+  .kw-chip.kw-lg { font-size: 14px; padding: 6px 12px; }
+  .kw-chip.kw-md { font-size: 13px; }
+
+  /* 푸터 */
+  .app-footer { padding: 18px 0; font-size: 12px; }
+
+  /* 사이드바를 본문 아래로 (이미 two-col 900px 아래 대응됨 — 확실히) */
+  .two-col { grid-template-columns: 1fr; gap: 14px; }
+  .sidebar-card { position: static; }
+}
+
+/* ────────────────────────────────────────────────
+   반응형: 초소형 (480px 이하 — 예: iPhone SE)
+   ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .container { padding: 0 10px; }
+  .grid-rounds { grid-template-columns: 1fr; }
+  .grid-stats { grid-template-columns: 1fr; }
+  .answer-tabs { flex-wrap: wrap; }
+  .answer-tab { flex: 1; min-width: 0; text-align: center; }
+  .question-header .q-meta { gap: 3px; }
+  .nav-link { padding: 6px 8px; font-size: 12px; }
+  .brand-kor { font-size: 16px; }
+
+  /* 차트 영역에 가로 스크롤 허용 — 내부 SVG 겹침 방지 */
+  .chart-card .recharts-wrapper {
+    min-width: 320px;
+  }
+  .chart-card > div:has(> .recharts-responsive-container) {
+    overflow-x: auto;
+  }
+}
+
+/* ────────────────────────────────────────────────
+   터치 디바이스 — hover 효과 축소, 탭 타겟 확대
+   ──────────────────────────────────────────────── */
+@media (hover: none) {
+  .round-card:hover { box-shadow: var(--shadow); border-color: var(--color-border); }
+  .kw-chip:hover { background: #f3f4f6; color: var(--color-text); }
+  .nav-link { padding-top: 10px; padding-bottom: 10px; }
+  .filter-chip { min-height: 34px; }
+  .answer-tab { min-height: 40px; }
+}
+
+/* ────────────────────────────────────────────────
+   접근성: 감축 모션 선호
+   ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; }
+}

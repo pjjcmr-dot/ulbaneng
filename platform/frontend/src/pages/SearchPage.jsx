@@ -1,12 +1,24 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { questions, ROUNDS } from '../utils/data.js';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { questions, ROUNDS } from '../utils/data-core.js';
 
 export default function SearchPage() {
-  const [query, setQuery] = useState('');
-  const [round, setRound] = useState('all');
-  const [session, setSession] = useState('all');
-  const [type, setType] = useState('all');
+  // URL 쿼리 파라미터와 양방향 동기화 — 상세페이지에서 뒤로가기 시 검색 상태 유지
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') || '');
+  const [round, setRound] = useState(searchParams.get('round') || 'all');
+  const [session, setSession] = useState(searchParams.get('session') || 'all');
+  const [type, setType] = useState(searchParams.get('type') || 'all');
+
+  // 상태 변경 → URL 동기화 (replace: true로 히스토리 누적 방지, 타이핑마다 쌓이지 않음)
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (query) params.set('q', query);
+    if (round !== 'all') params.set('round', round);
+    if (session !== 'all') params.set('session', session);
+    if (type !== 'all') params.set('type', type);
+    setSearchParams(params, { replace: true });
+  }, [query, round, session, type, setSearchParams]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();

@@ -1,31 +1,31 @@
-// Single data access layer - works for both local dev (with backend) and static build (pure JSON import)
-// Vite resolves '@data/*.json' via alias to the /platform/data directory, bundling JSON into the build.
+// 전체 데이터 모듈 (코어 + 답안).
+// 답안이 필요한 페이지(RoundDetailPage·QuestionPage)만 이 모듈을 import합니다.
+// 그 외 페이지는 `./data-core.js`만 import하여 번들에서 answers 청크가 제외됩니다.
 
-import questionsRaw from '@data/questions.json';
 import summariesRaw from '@data/answers-summary.json';
 import detailsRaw from '@data/answers-detailed.json';
-import analysisRaw from '@data/analysis.json';
+// 기술사 답안지 표준(v2) — 기존 심화답안을 회차별로 override
+import detailsV2_136 from '@data/answers-detailed-v2-136.json';
+import detailsV2_137 from '@data/answers-detailed-v2-137.json';
+import detailsV2_138 from '@data/answers-detailed-v2-138.json';
+import { questions } from './data-core.js';
 
-export const meta = questionsRaw.meta;
-export const questions = questionsRaw.questions;
+// 코어 export 전부 패스스루 (기존 import 호환)
+export * from './data-core.js';
+
 export const summaries = summariesRaw.answers || {};
-export const details = detailsRaw.answers || {};
-export const analysis = analysisRaw;
-
-export const ROUNDS = meta.rounds;
+// 기본 심화답안 + v2 override (136·137·138회 표준 답안 우선 적용)
+export const details = {
+  ...(detailsRaw.answers || {}),
+  ...(detailsV2_136.answers || {}),
+  ...(detailsV2_137.answers || {}),
+  ...(detailsV2_138.answers || {})
+};
 
 export function getQuestion(id) {
   const q = questions.find((x) => x.id === id);
   if (!q) return null;
   return { ...q, summary: summaries[id] || null, detailed: details[id] || null };
-}
-
-export function getQuestionsByRound(round) {
-  return questions.filter((q) => q.round === Number(round));
-}
-
-export function getQuestionsBySession(round, session) {
-  return questions.filter((q) => q.round === Number(round) && q.session === Number(session));
 }
 
 export function groupByRoundSession(list) {
@@ -37,20 +37,3 @@ export function groupByRoundSession(list) {
   }
   return Array.from(map.values()).sort((a, b) => a.round - b.round || a.session - b.session);
 }
-
-export function searchQuestions(query) {
-  const q = (query || '').trim().toLowerCase();
-  if (!q) return [];
-  return questions.filter((x) =>
-    x.text.toLowerCase().includes(q) ||
-    (x.keywords || []).some((k) => k.toLowerCase().includes(q))
-  );
-}
-
-export const totalQuestions = questions.length;
-export const summaryCount = Object.keys(summaries).length;
-export const detailedCount = Object.keys(details).length;
-
-export const sessionLabel = (s) => `${s}교시`;
-export const formatBySession = (s) =>
-  s === 1 ? '단답형 (13문제 중 10선택 · 각 10점)' : '서술형 (6문제 중 4선택 · 각 25점)';

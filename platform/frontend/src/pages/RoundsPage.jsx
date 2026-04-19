@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ROUNDS, getQuestionsByRound, analysis } from '../utils/data.js';
+import { ROUNDS, getQuestionsByRound, analysis } from '../utils/data-core.js';
 
 export default function RoundsPage() {
   const trendByRound = analysis.trendsByRound || {};

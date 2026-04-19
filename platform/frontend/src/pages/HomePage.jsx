@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { meta, totalQuestions, summaryCount, detailedCount, ROUNDS, analysis } from '../utils/data.js';
+import { meta, totalQuestions, summaryCount, detailedCount, ROUNDS, analysis } from '../utils/data-core.js';
 
 export default function HomePage() {
   const topKeywords = (analysis.keywordFrequency || []).slice(0, 30);

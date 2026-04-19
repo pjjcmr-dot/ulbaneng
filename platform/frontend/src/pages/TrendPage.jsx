@@ -3,7 +3,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
   LineChart, Line, Legend, PieChart, Pie, Cell
 } from 'recharts';
-import { analysis, ROUNDS, meta } from '../utils/data.js';
+import { analysis, ROUNDS, meta } from '../utils/data-core.js';
 
 const PIE_COLORS = ['#1f4fbb', '#d97706', '#0f766e', '#a21caf', '#059669', '#dc2626', '#6366f1', '#0891b2', '#ca8a04', '#be185d'];
 
@@ -33,11 +33,11 @@ export default function TrendPage() {
             <button key={n} className={`filter-chip ${top===n?'active':''}`} onClick={() => setTop(n)}>상위 {n}개</button>
           ))}
         </div>
-        <ResponsiveContainer width="100%" height={Math.max(300, top*26)}>
-          <BarChart data={keywordData} layout="vertical" margin={{left: 60, right: 20, top: 10, bottom: 10}}>
+        <ResponsiveContainer width="100%" height={Math.max(300, top*28)}>
+          <BarChart data={keywordData} layout="vertical" margin={{left: 60, right: 20, top: 20, bottom: 10}}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis type="number" />
-            <YAxis dataKey="name" type="category" width={130} tick={{fontSize: 12}} />
+            <YAxis dataKey="name" type="category" width={140} tick={{fontSize: 12}} interval={0} />
             <Tooltip />
             <Bar dataKey="value" fill="#1f4fbb" name="등장 횟수" />
           </BarChart>
@@ -48,10 +48,10 @@ export default function TrendPage() {
         <h3>법령 출제 빈도 (상위 10)</h3>
         <div className="chart-hint">문제에 명시적으로 인용된 법령·지침 기준. 법령별 학습 우선순위를 확인하세요.</div>
         <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={lawData} layout="vertical" margin={{left: 120, right: 20, top: 10, bottom: 10}}>
+          <BarChart data={lawData} layout="vertical" margin={{left: 120, right: 20, top: 20, bottom: 10}}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis type="number" />
-            <YAxis dataKey="name" type="category" width={200} tick={{fontSize: 12}} />
+            <YAxis dataKey="name" type="category" width={200} tick={{fontSize: 12}} interval={0} />
             <Tooltip />
             <Bar dataKey="value" fill="#d97706" name="등장 횟수" />
           </BarChart>

@@ -4,7 +4,11 @@
     "totalQuestions": 279,
     "rounds": [130, 131, 132, 133, 134, 135, 136, 137, 138],
     "methodology": "문제 키워드 태깅과 법령·주제 자동분류 기반. 키워드는 각 문제에 부여된 태그 집합에서 집계.",
-    "updatedAt": "2026-04-18"
+    "updatedAt": "2026-04-19"
+  },
+  "coverage": {
+    "summaryCount": 279,
+    "detailedCount": 279
   },
   "keywordFrequency": [
     { "label": "지구단위계획", "count": 28, "category": "계획수단" },
