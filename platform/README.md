@@ -1,6 +1,6 @@
 # 도시계획기술사 기출문제 플랫폼 (130~138회)
 
-기술사 130~138회 전 기출문제·답안·출제경향 분석을 제공하는 **React + Node.js 기반 웹 플랫폼**입니다.
+기술사 130~138회 전 기출문제·답안·출제경향 분석을 제공하는 **React 기반 정적 SPA**입니다.
 
 ## 📊 프로젝트 현황
 
@@ -9,113 +9,99 @@
 | 수록 회차 | 130~138회 (9회) | ✅ |
 | 총 기출문제 | **279문제** | ✅ 100% |
 | 핵심요약형 답안 | **279개** | ✅ 100% |
-| 심화 에세이 답안 | **279개** | ✅ 100% |
+| 심화 에세이 답안 (v1) | **279개** | ✅ 100% |
+| 심화 에세이 답안 (v2 — 기술사 답안지 표준) | **136·137·138회 93개** | 🟢 진행 중 |
 | 출제경향 분석 (키워드·법령·주제·추이) | — | ✅ |
 
 ## 🏗️ 프로젝트 구조
 
 ```
 platform/
-├── README.md                      # 본 문서
-├── backend/                       # Express API 서버 (포트 4000)
-│   ├── package.json
-│   ├── server.js                  # API 라우트
-│   └── .gitignore
-└── frontend/                      # React + Vite (포트 5173)
+├── README.md                           # 본 문서
+└── frontend/                           # React + Vite SPA (포트 5173)
     ├── package.json
-    ├── vite.config.js             # @data alias → ./src/data
+    ├── vite.config.js                  # @data alias → ./src/data
     ├── index.html
     ├── .gitignore
     └── src/
-        ├── main.jsx               # 진입점
-        ├── App.jsx                # 라우팅·네비게이션
-        ├── styles.css             # 전역 스타일
-        ├── data/                  # ⭐ 핵심 데이터
-        │   ├── questions.json     # 279문제 메타·키워드
-        │   ├── answers-summary.json   # 279문제 요약답안
-        │   ├── answers-detailed.json  # 279문제 심화답안
-        │   └── analysis.json      # 출제경향 분석
+        ├── main.jsx                    # 진입점
+        ├── App.jsx                     # 라우팅·네비게이션
+        ├── styles.css                  # 전역 스타일
+        ├── data/                       # ⭐ 핵심 데이터 (정적 JSON)
+        │   ├── questions.json          # 279문제 메타·키워드
+        │   ├── answers-summary.json    # 279문제 요약답안
+        │   ├── answers-detailed.json   # 279문제 심화답안 (v1)
+        │   ├── answers-detailed-v2-136.json   # 136회 기술사 표준 답안
+        │   ├── answers-detailed-v2-137.json   # 137회 기술사 표준 답안
+        │   ├── answers-detailed-v2-138.json   # 138회 기술사 표준 답안
+        │   └── analysis.json           # 출제경향 분석
         ├── utils/
-        │   └── data.js            # 데이터 loader
+        │   ├── data-core.js            # 코어 데이터 (answers 제외)
+        │   └── data.js                 # 전체 데이터 로더 + v2 override
         ├── components/
-        │   └── AnswerView.jsx     # 답안 탭 뷰어
+        │   └── AnswerView.jsx          # 답안 탭 뷰어
         └── pages/
-            ├── HomePage.jsx       # 홈 (통계·TOP 키워드)
-            ├── RoundsPage.jsx     # 회차 목록
-            ├── RoundDetailPage.jsx # 회차별 4교시 문제
-            ├── QuestionPage.jsx   # 문제별 답안 (요약/심화 탭)
-            ├── TrendPage.jsx      # 출제경향 차트
-            └── SearchPage.jsx     # 검색·필터
+            ├── HomePage.jsx            # 홈 (통계·TOP 키워드)
+            ├── RoundsPage.jsx          # 회차 목록
+            ├── RoundDetailPage.jsx     # 회차별 4교시 문제
+            ├── QuestionPage.jsx        # 문제별 답안 (요약/심화 탭)
+            ├── TrendPage.jsx           # 출제경향 차트
+            └── SearchPage.jsx          # 검색·필터 (URL 상태 유지)
 ```
+
+### 아키텍처 특징
+- **백엔드 없음** — 모든 데이터가 JSON으로 빌드 번들에 포함되는 **순수 정적 SPA**
+- **데이터 용량** — 약 2MB (JSON 전체), 빌드 시 코드 스플리팅으로 청크 분리
+- **회원가입·인증·유저 데이터 없음** — 지식 공유·시험 공부 전용
 
 ## 🚀 로컬 실행
 
 ### 1. 의존성 설치 (처음 한 번)
-
 ```bash
-# 프로젝트 루트에서
-cd platform/backend
-npm install
-
-cd ../frontend
+cd platform/frontend
 npm install
 ```
 
 ### 2. 개발 서버 실행
-
-**두 개의 터미널을 열어 각각 실행합니다.**
-
 ```bash
-# 터미널 1 — Backend (포트 4000)
-cd platform/backend
-npm run dev
-
-# 터미널 2 — Frontend (포트 5173)
 cd platform/frontend
 npm run dev
 ```
 
 ### 3. 브라우저 접속
-
 **http://localhost:5173** 으로 접속하면 플랫폼이 열립니다.
-
-- Frontend `vite.config.js`에 proxy 설정이 있어 `/api/*` 요청은 자동으로 `http://localhost:4000`(backend)으로 전달됩니다.
-- Backend는 로드 시 `279문제 / 요약 279 / 심화 279` 메시지를 출력하면 정상 기동입니다.
 
 ## 🏭 정적 빌드 (배포용)
 
-Frontend는 데이터를 `src/data/`에서 정적 import하므로 **백엔드 없이도 완전히 동작**하는 정적 사이트 빌드가 가능합니다.
+Frontend는 데이터를 `src/data/`에서 정적 import하므로 **완전한 정적 사이트**로 빌드됩니다.
 
 ### 빌드 명령
-
 ```bash
 cd platform/frontend
 npm run build
 ```
-
 결과물: `platform/frontend/dist/` 폴더
 
 ### 빌드 결과 미리보기
-
 ```bash
 cd platform/frontend
 npm run preview        # 포트 4173
 ```
 
-### 배포 방법
+### 배포 방법 — 무료 CDN 호스팅 추천
 
-`dist/` 폴더의 내용을 아래 서비스에 그대로 업로드하면 됩니다:
+`dist/` 폴더의 내용을 그대로 업로드하면 됩니다:
 
-| 서비스 | 방법 |
-|---|---|
-| **GitHub Pages** | `dist/` → `gh-pages` 브랜치에 푸시 |
-| **Netlify** | `dist/` 폴더 드래그 앤 드롭 |
-| **Vercel** | 프로젝트 연결 후 build command: `npm run build`, output: `dist` |
-| **S3 + CloudFront** | `aws s3 sync dist/ s3://your-bucket/ --delete` |
-| **자체 서버(nginx)** | `dist/` 내용을 web root에 복사 |
+| 서비스 | 방법 | 비용 |
+|---|---|---|
+| **GitHub Pages** | `dist/` → `gh-pages` 브랜치 푸시 | 무료 |
+| **Netlify** | `dist/` 폴더 드래그 앤 드롭 또는 Git 연동 | 무료 |
+| **Vercel** | 프로젝트 연결 / build command: `npm run build`, output: `dist` | 무료 |
+| **Cloudflare Pages** | Git 연동 / build command: `npm run build`, output: `dist` | 무료·무제한 대역폭 |
+| **S3 + CloudFront** | `aws s3 sync dist/ s3://your-bucket/ --delete` | 종량제 |
+| **자체 서버(nginx)** | `dist/` 내용을 web root에 복사 | — |
 
 ### nginx 배포 예시
-
 ```nginx
 server {
     listen 80;
@@ -129,26 +115,6 @@ server {
 }
 ```
 
-## 🌐 API 엔드포인트 (Backend)
-
-Backend 서버는 다음 REST API를 제공합니다:
-
-| Method | Endpoint | 설명 |
-|---|---|---|
-| GET | `/api/health` | 서버 상태 확인 |
-| GET | `/api/meta` | 메타정보 (회차·총 문제 수) |
-| GET | `/api/questions` | 전 문제 목록 (round/session/keyword 필터 가능) |
-| GET | `/api/questions/:id` | 특정 문제 (요약+심화 답안 포함) |
-| GET | `/api/answers/summary` | 전 요약답안 |
-| GET | `/api/answers/summary/:id` | 특정 문제 요약답안 |
-| GET | `/api/answers/detailed` | 전 심화답안 |
-| GET | `/api/answers/detailed/:id` | 특정 문제 심화답안 |
-| GET | `/api/analysis` | 출제경향 분석 전체 |
-| GET | `/api/analysis/keywords` | 키워드 빈도 |
-| GET | `/api/analysis/laws` | 법령 빈도 |
-| GET | `/api/analysis/topics` | 주제 분포 |
-| GET | `/api/analysis/trends` | 회차별 추이 |
-
 ## 📱 주요 페이지
 
 | 경로 | 화면 |
@@ -158,14 +124,15 @@ Backend 서버는 다음 REST API를 제공합니다:
 | `/rounds/:round` | 회차 내 4교시별 문제 목록·답안 작성 상태 표시 |
 | `/questions/:id` | 문제 본문·답안 (요약/심화 탭)·같은 교시 다른 문제 링크 |
 | `/trends` | 출제경향 분석 차트 (Recharts) — 키워드·법령·주제·회차별 추이·교시별 분포 |
-| `/search` | 키워드·본문·ID 검색 + 회차·교시·유형 필터 |
+| `/search` | 키워드·본문·ID 검색 + 회차·교시·유형 필터 (URL 상태 유지) |
 
 ## 🛠️ 기술 스택
 
 - **Frontend**: React 18, React Router 6, Vite 5, Recharts 2 (차트)
-- **Backend**: Node.js 22, Express 4, CORS
 - **Data**: 정적 JSON (총 ~2MB, 정적 빌드 시 번들에 포함)
 - **스타일**: 순수 CSS (Pretendard/Noto Sans KR 폰트)
+- **반응형**: 1024px / 768px / 480px 브레이크포인트
+- **코드 스플리팅**: vendor-react·vendor-charts·data-* 청크 분리
 
 ## 📝 데이터 출처
 
@@ -176,22 +143,17 @@ Backend 서버는 다음 REST API를 제공합니다:
 ## 🤝 기여 방법
 
 1. `platform/frontend/src/data/answers-summary.json` 또는 `answers-detailed.json`에 답안 보완.
-2. `platform/frontend/src/data/analysis.json`에 새로운 분석 축 추가.
-3. `platform/frontend/src/components/`에 새 차트·뷰 컴포넌트 추가.
-4. 실행 확인 후 커밋.
+2. `platform/frontend/src/data/answers-detailed-v2-*.json`에 기술사 표준 답안지 형식으로 회차별 심화 답안 추가.
+3. `platform/frontend/src/data/analysis.json`에 새로운 분석 축 추가.
+4. `platform/frontend/src/components/`·`pages/`에 새 UI 컴포넌트 추가.
+5. 실행 확인 후 커밋.
 
 ## 🐛 트러블슈팅
 
-### Backend가 "Error: ENOENT: no such file or directory"로 실패
-
-→ `backend/server.js`의 `DATA_DIR`이 `../frontend/src/data`를 가리키는지 확인하세요. 데이터 파일이 이 경로에 존재해야 합니다.
-
 ### Frontend가 5173이 아닌 5174로 뜸
-
-→ 5173 포트를 이미 사용 중인 프로세스가 있습니다. 해당 프로세스를 종료 후 다시 `npm run dev`를 실행하거나, 5174로 그대로 사용하셔도 됩니다 (proxy는 port와 무관).
+→ 5173 포트를 이미 사용 중인 프로세스가 있습니다. 해당 프로세스를 종료 후 다시 `npm run dev`를 실행하거나, 5174로 그대로 사용하셔도 무방합니다.
 
 ### 정적 빌드 후 페이지 새로고침 시 404
-
 → SPA 라우팅 때문입니다. 배포 서버에서 **fallback을 `index.html`로 설정**해야 합니다 (위 nginx 예시 참조).
 
 ## 📄 라이선스
@@ -200,6 +162,5 @@ Backend 서버는 다음 REST API를 제공합니다:
 
 ---
 
-**제작:** 도시계획기술사 수험 준비 프로젝트  
-**기간:** 2026.04.18 ~ 2026.04.19  
-**답안 규모:** 279문제 × 2형식 = **558개 답안**
+**제작:** 도시계획기술사 수험 준비 프로젝트
+**답안 규모:** 279문제 × 요약/심화 2형식 + v2 기술사 표준 답안 93개 추가
