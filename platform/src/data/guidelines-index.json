@@ -1,0 +1,70 @@
+{
+  "guidelines": [
+    {
+      "slug": "district-unit-plan",
+      "title": "지구단위계획수립지침",
+      "shortTitle": "지구단위계획",
+      "file": "guideline-district-unit-plan.json",
+      "icon": "🏛",
+      "color": "#1f4fbb",
+      "lawBase": "국토계획법 제49조~제55조",
+      "description": "도시·군관리계획의 상세계획 수단. 용도·밀도·형태·경관·기반시설을 종합 관리하는 지구단위계획의 개념·원칙·유형·절차·공공기여를 수록.",
+      "keywords": ["지구단위계획", "특별계획구역", "공공기여", "공간혁신구역", "비도시지역"]
+    },
+    {
+      "slug": "city-gun-basic-plan",
+      "title": "도시·군기본계획수립지침",
+      "shortTitle": "도시·군기본계획",
+      "file": "guideline-city-gun-basic-plan.json",
+      "icon": "🗺",
+      "color": "#0f766e",
+      "lawBase": "국토계획법 제18조~제23조",
+      "description": "지자체 공간정책의 최상위 법정계획. 20년 목표의 종합 청사진으로서의 지위·성격·내용·수립절차·축소도시·탄소중립 대응을 수록.",
+      "keywords": ["도시군기본계획", "공간구조", "인구배분", "도시유형", "탄소중립", "축소도시"]
+    },
+    {
+      "slug": "city-gun-management-plan",
+      "title": "도시·군관리계획수립지침",
+      "shortTitle": "도시·군관리계획",
+      "file": "guideline-city-gun-management-plan.json",
+      "icon": "📐",
+      "color": "#d97706",
+      "lawBase": "국토계획법 제2조·제36조~제75조",
+      "description": "용도지역·지구·구역, 기반시설, 지구단위계획, 공간재구조화계획을 결정하는 도시·군관리계획의 정의·재정비·도면 해석·절차를 수록.",
+      "keywords": ["도시군관리계획", "용도지역", "기반시설", "공간재구조화", "재정비", "계획도서"]
+    },
+    {
+      "slug": "landscape-plan",
+      "title": "경관계획수립지침",
+      "shortTitle": "경관계획",
+      "file": "guideline-landscape-plan.json",
+      "icon": "🌆",
+      "color": "#a21caf",
+      "lawBase": "경관법 제8조·제9조",
+      "description": "경관법상 5종 경관계획(국토·광역·기본·특정·부문별), 경관자원·축·거점, 경관지구·심의·협정·사업과 2024 경관심의 가이드라인을 수록.",
+      "keywords": ["경관계획", "경관협정", "경관심의", "경관지구", "중점경관관리구역"]
+    },
+    {
+      "slug": "urban-regeneration",
+      "title": "도시재생 활성화계획수립지침",
+      "shortTitle": "도시재생 활성화계획",
+      "file": "guideline-urban-regeneration.json",
+      "icon": "♻",
+      "color": "#059669",
+      "lawBase": "도시재생특별법 제12조·제25조",
+      "description": "도시재생전략계획·활성화계획, 5유형(경제기반·중심시가지·일반근린·주거지지원·우리동네살리기), 특별재생지역·인정사업·국가시범지구·뉴:빌리지를 수록.",
+      "keywords": ["도시재생", "활성화계획", "특별재생지역", "국가시범지구", "뉴:빌리지", "인정사업"]
+    },
+    {
+      "slug": "public-contribution",
+      "title": "공공기여 가이드라인",
+      "shortTitle": "공공기여 가이드라인",
+      "file": "guideline-public-contribution.json",
+      "icon": "🤝",
+      "color": "#dc2626",
+      "lawBase": "국계법 제65조·제52조·제78조⑥ / 국토부 고시(2025.3)",
+      "description": "2025.3 국토부 공공기여 가이드라인을 포함한 공공기여 제도 전반. 법정 무상귀속·협상형·대체형 교환·자발적 기부채납의 4대 경로, 등가성·AI 산정·블록체인·비용적률형 인센티브를 수록.",
+      "keywords": ["공공기여", "기부채납", "등가성", "용적률인센티브", "교환", "2025.3가이드라인"]
+    }
+  ]
+}

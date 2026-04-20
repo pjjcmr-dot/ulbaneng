@@ -16,63 +16,56 @@
 ## 🏗️ 프로젝트 구조
 
 ```
-platform/
+platform/                               # ⭐ 프로젝트 루트 (바로 여기서 npm run dev)
 ├── README.md                           # 본 문서
-└── frontend/                           # React + Vite SPA (포트 5173)
-    ├── package.json
-    ├── vite.config.js                  # @data alias → ./src/data
-    ├── index.html
-    ├── .gitignore
-    └── src/
-        ├── main.jsx                    # 진입점
-        ├── App.jsx                     # 라우팅·네비게이션
-        ├── styles.css                  # 전역 스타일
-        ├── data/                       # ⭐ 핵심 데이터 (정적 JSON)
-        │   ├── questions.json          # 279문제 메타·키워드
-        │   ├── answers-summary.json    # 279문제 요약답안
-        │   ├── answers-detailed.json   # 279문제 심화답안 (v1)
-        │   ├── answers-detailed-v2-136.json   # 136회 기술사 표준 답안
-        │   ├── answers-detailed-v2-137.json   # 137회 기술사 표준 답안
-        │   ├── answers-detailed-v2-138.json   # 138회 기술사 표준 답안
-        │   └── analysis.json           # 출제경향 분석
-        ├── utils/
-        │   ├── data-core.js            # 코어 데이터 (answers 제외)
-        │   └── data.js                 # 전체 데이터 로더 + v2 override
-        ├── components/
-        │   └── AnswerView.jsx          # 답안 탭 뷰어
-        └── pages/
-            ├── HomePage.jsx            # 홈 (통계·TOP 키워드)
-            ├── RoundsPage.jsx          # 회차 목록
-            ├── RoundDetailPage.jsx     # 회차별 4교시 문제
-            ├── QuestionPage.jsx        # 문제별 답안 (요약/심화 탭)
-            ├── TrendPage.jsx           # 출제경향 차트
-            └── SearchPage.jsx          # 검색·필터 (URL 상태 유지)
+├── package.json
+├── package-lock.json
+├── vite.config.js                      # @data alias → ./src/data
+├── index.html
+├── .gitignore
+├── public/
+└── src/
+    ├── main.jsx                        # 진입점
+    ├── App.jsx                         # 라우팅·네비게이션
+    ├── styles.css                      # 전역 스타일
+    ├── data/                           # ⭐ 핵심 데이터 (정적 JSON)
+    │   ├── questions.json              # 279문제 메타·키워드
+    │   ├── answers-summary.json        # 279문제 요약답안
+    │   ├── answers-detailed.json       # 279문제 심화답안 (v1)
+    │   ├── answers-detailed-v2-136.json   # 136회 기술사 표준 답안
+    │   ├── answers-detailed-v2-137.json   # 137회 기술사 표준 답안
+    │   ├── answers-detailed-v2-138.json   # 138회 기술사 표준 답안
+    │   └── analysis.json               # 출제경향 분석
+    ├── utils/
+    │   ├── data-core.js                # 코어 데이터 (answers 제외)
+    │   └── data.js                     # 전체 데이터 로더 + v2 override
+    ├── components/
+    │   └── AnswerView.jsx              # 답안 탭 뷰어
+    └── pages/
+        ├── HomePage.jsx                # 홈 (통계·TOP 키워드)
+        ├── RoundsPage.jsx              # 회차 목록
+        ├── RoundDetailPage.jsx         # 회차별 4교시 문제
+        ├── QuestionPage.jsx            # 문제별 답안 (요약/심화 탭)
+        ├── TrendPage.jsx               # 출제경향 차트
+        └── SearchPage.jsx              # 검색·필터 (URL 상태 유지)
 ```
 
 ### 아키텍처 특징
 - **백엔드 없음** — 모든 데이터가 JSON으로 빌드 번들에 포함되는 **순수 정적 SPA**
+- **단일 프로젝트 루트** — `platform/`에서 바로 `npm run dev`·`npm run build`
 - **데이터 용량** — 약 2MB (JSON 전체), 빌드 시 코드 스플리팅으로 청크 분리
 - **회원가입·인증·유저 데이터 없음** — 지식 공유·시험 공부 전용
 
 ## 🚀 로컬 실행
 
-루트(`platform/`)에 편의 `package.json`이 있어 **루트에서 바로 실행**할 수 있습니다.
-
 ### 1. 의존성 설치 (처음 한 번)
 ```bash
 cd platform
-npm run install:frontend
-# 또는: cd frontend && npm install
+npm install
 ```
 
 ### 2. 개발 서버 실행
 ```bash
-# 방법 A — 루트에서 (권장)
-cd platform
-npm run dev
-
-# 방법 B — frontend 폴더에서
-cd platform/frontend
 npm run dev
 ```
 
@@ -81,18 +74,15 @@ npm run dev
 
 ## 🏭 정적 빌드 (배포용)
 
-Frontend는 데이터를 `src/data/`에서 정적 import하므로 **완전한 정적 사이트**로 빌드됩니다.
-
 ### 빌드 명령
 ```bash
-cd platform/frontend
+cd platform
 npm run build
 ```
-결과물: `platform/frontend/dist/` 폴더
+결과물: `platform/dist/` 폴더
 
 ### 빌드 결과 미리보기
 ```bash
-cd platform/frontend
 npm run preview        # 포트 4173
 ```
 
@@ -150,10 +140,10 @@ server {
 
 ## 🤝 기여 방법
 
-1. `platform/frontend/src/data/answers-summary.json` 또는 `answers-detailed.json`에 답안 보완.
-2. `platform/frontend/src/data/answers-detailed-v2-*.json`에 기술사 표준 답안지 형식으로 회차별 심화 답안 추가.
-3. `platform/frontend/src/data/analysis.json`에 새로운 분석 축 추가.
-4. `platform/frontend/src/components/`·`pages/`에 새 UI 컴포넌트 추가.
+1. `src/data/answers-summary.json` 또는 `answers-detailed.json`에 답안 보완.
+2. `src/data/answers-detailed-v2-*.json`에 기술사 표준 답안지 형식으로 회차별 심화 답안 추가.
+3. `src/data/analysis.json`에 새로운 분석 축 추가.
+4. `src/components/`·`pages/`에 새 UI 컴포넌트 추가.
 5. 실행 확인 후 커밋.
 
 ## 🐛 트러블슈팅

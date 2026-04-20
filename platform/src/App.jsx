@@ -10,6 +10,8 @@ const RoundDetailPage = lazy(() => import('./pages/RoundDetailPage.jsx'));
 const QuestionPage = lazy(() => import('./pages/QuestionPage.jsx'));
 const TrendPage = lazy(() => import('./pages/TrendPage.jsx'));
 const SearchPage = lazy(() => import('./pages/SearchPage.jsx'));
+const GuidelinesPage = lazy(() => import('./pages/GuidelinesPage.jsx'));
+const GuidelineDetailPage = lazy(() => import('./pages/GuidelineDetailPage.jsx'));
 
 const PageLoading = () => (
   <div className="loading">페이지 로딩 중...</div>
@@ -28,6 +30,7 @@ export default function App() {
             <NavLink to="/" end className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>홈</NavLink>
             <NavLink to="/rounds" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>회차별</NavLink>
             <NavLink to="/trends" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>출제경향</NavLink>
+            <NavLink to="/guidelines" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>이론학습</NavLink>
             <NavLink to="/search" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>검색</NavLink>
           </nav>
         </div>
@@ -40,6 +43,8 @@ export default function App() {
             <Route path="/rounds/:round" element={<RoundDetailPage />} />
             <Route path="/questions/:id" element={<QuestionPage />} />
             <Route path="/trends" element={<TrendPage />} />
+            <Route path="/guidelines" element={<GuidelinesPage />} />
+            <Route path="/guidelines/:slug" element={<GuidelineDetailPage />} />
             <Route path="/search" element={<SearchPage />} />
           </Routes>
         </Suspense>
