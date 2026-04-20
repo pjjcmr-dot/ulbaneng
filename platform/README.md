@@ -56,14 +56,22 @@ platform/
 
 ## 🚀 로컬 실행
 
+루트(`platform/`)에 편의 `package.json`이 있어 **루트에서 바로 실행**할 수 있습니다.
+
 ### 1. 의존성 설치 (처음 한 번)
 ```bash
-cd platform/frontend
-npm install
+cd platform
+npm run install:frontend
+# 또는: cd frontend && npm install
 ```
 
 ### 2. 개발 서버 실행
 ```bash
+# 방법 A — 루트에서 (권장)
+cd platform
+npm run dev
+
+# 방법 B — frontend 폴더에서
 cd platform/frontend
 npm run dev
 ```
