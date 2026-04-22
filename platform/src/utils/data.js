@@ -6,6 +6,7 @@ import summariesRaw from '@data/answers-summary.json';
 import detailsRaw from '@data/answers-detailed.json';
 // 기술사 답안지 표준(v2) — 기존 심화답안을 회차별로 override
 import detailsV2_130 from '@data/answers-detailed-v2-130.json';
+import detailsV2_131 from '@data/answers-detailed-v2-131.json';
 import detailsV2_136 from '@data/answers-detailed-v2-136.json';
 import detailsV2_137 from '@data/answers-detailed-v2-137.json';
 import detailsV2_138 from '@data/answers-detailed-v2-138.json';
@@ -15,10 +16,11 @@ import { questions } from './data-core.js';
 export * from './data-core.js';
 
 export const summaries = summariesRaw.answers || {};
-// 기본 심화답안 + v2 override (130·136·137·138회 표준 답안 우선 적용)
+// 기본 심화답안 + v2 override (130·131·136·137·138회 표준 답안 우선 적용)
 export const details = {
   ...(detailsRaw.answers || {}),
   ...(detailsV2_130.answers || {}),
+  ...(detailsV2_131.answers || {}),
   ...(detailsV2_136.answers || {}),
   ...(detailsV2_137.answers || {}),
   ...(detailsV2_138.answers || {})
