@@ -8,6 +8,9 @@ import detailsRaw from '@data/answers-detailed.json';
 import detailsV2_130 from '@data/answers-detailed-v2-130.json';
 import detailsV2_131 from '@data/answers-detailed-v2-131.json';
 import detailsV2_132 from '@data/answers-detailed-v2-132.json';
+import detailsV2_133 from '@data/answers-detailed-v2-133.json';
+import detailsV2_134 from '@data/answers-detailed-v2-134.json';
+import detailsV2_135 from '@data/answers-detailed-v2-135.json';
 import detailsV2_136 from '@data/answers-detailed-v2-136.json';
 import detailsV2_137 from '@data/answers-detailed-v2-137.json';
 import detailsV2_138 from '@data/answers-detailed-v2-138.json';
@@ -17,12 +20,15 @@ import { questions } from './data-core.js';
 export * from './data-core.js';
 
 export const summaries = summariesRaw.answers || {};
-// 기본 심화답안 + v2 override (130·131·132·136·137·138회 표준 답안 우선 적용)
+// 기본 심화답안 + v2 override (130~138회 표준 답안 우선 적용)
 export const details = {
   ...(detailsRaw.answers || {}),
   ...(detailsV2_130.answers || {}),
   ...(detailsV2_131.answers || {}),
   ...(detailsV2_132.answers || {}),
+  ...(detailsV2_133.answers || {}),
+  ...(detailsV2_134.answers || {}),
+  ...(detailsV2_135.answers || {}),
   ...(detailsV2_136.answers || {}),
   ...(detailsV2_137.answers || {}),
   ...(detailsV2_138.answers || {})
