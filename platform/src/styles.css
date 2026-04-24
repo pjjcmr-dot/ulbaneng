@@ -869,3 +869,266 @@ p  { margin: 8px 0; }
     padding: 12px;
   }
 }
+
+/* ────────────────────────────────────────────── */
+/* 모의고사 (Mock Exam) — 2026 예상문제 전용 스타일  */
+/* ────────────────────────────────────────────── */
+
+/* 홈페이지 모의고사 프로모 배너 */
+.mock-promo-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 10px;
+  color: #78350f !important;
+  text-decoration: none !important;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15);
+}
+.mock-promo-banner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.28);
+  background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+}
+.mock-promo-icon { font-size: 28px; }
+.mock-promo-body { flex: 1; }
+.mock-promo-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.mock-promo-sub { font-size: 13px; opacity: 0.85; }
+.mock-promo-arrow { font-size: 24px; font-weight: 700; color: #92400e; }
+
+
+
+/* 상단 네비의 모의고사 강조 */
+.nav-link-mock {
+  background: rgba(255, 202, 40, 0.18);
+  color: #fff !important;
+  border: 1px solid rgba(255, 202, 40, 0.45);
+  font-weight: 600;
+}
+.nav-link-mock:hover {
+  background: rgba(255, 202, 40, 0.32);
+}
+.nav-link-mock.active {
+  background: rgba(255, 202, 40, 0.4);
+  border-color: rgba(255, 202, 40, 0.7);
+}
+
+/* 상단 메타카드 */
+.mock-meta-card {
+  background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+  border: 1px solid #fbbf24;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.mock-meta-card strong { color: #78350f; }
+.mock-meta-note {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #d97706;
+  color: #92400e;
+}
+
+/* 2026 법령 개정 요약 details */
+.mock-law-updates {
+  margin-bottom: 20px;
+  background: #f0fdf4;
+  border: 1.5px solid #22c55e;
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+}
+.mock-law-updates summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  font-weight: 700;
+  color: #15803d;
+  font-size: 14px;
+  background: #dcfce7;
+  list-style: none;
+  user-select: none;
+  transition: background 0.15s;
+}
+.mock-law-updates summary::marker { display: none; }
+.mock-law-updates summary::-webkit-details-marker { display: none; }
+.mock-law-updates summary:hover { background: #bbf7d0; }
+.mock-law-updates[open] summary {
+  background: #86efac;
+  border-bottom: 1px solid #22c55e;
+}
+.mock-law-updates-body {
+  padding: 16px 22px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #166534;
+}
+.mock-law-updates-body ul { margin: 0 0 10px 0; padding-left: 20px; }
+.mock-law-updates-body li { margin-bottom: 6px; }
+.mock-law-updates-body strong { color: #14532d; }
+.mock-law-updates-footer {
+  margin: 12px 0 0 0;
+  padding-top: 10px;
+  border-top: 1px dashed #22c55e;
+  font-size: 12px;
+  color: #166534;
+  background: #f0fdf4;
+}
+.mock-law-updates-footer a { color: #15803d; font-weight: 600; }
+
+/* 툴바 (전체 펼침) */
+.mock-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+.mock-btn {
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mock-btn:hover { background: #1741a1; }
+
+/* 교시 블록 */
+.mock-session-block {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow);
+}
+.mock-session-block h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--color-primary-light);
+  font-size: 16px;
+}
+
+/* 문제 리스트 */
+.mock-q-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mock-q-item {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border: 1px solid #e5e7eb;
+  border-left: 3px solid var(--color-primary);
+  border-radius: 6px;
+  background: #fafbfd;
+  transition: background 0.15s;
+}
+.mock-q-item:hover { background: #f3f6fb; }
+.mock-q-head {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.mock-q-no {
+  font-weight: 700;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+.mock-q-text {
+  font-size: 14.5px;
+  line-height: 1.55;
+  font-weight: 500;
+}
+.mock-q-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* 답안 토글 버튼 — 클릭 유도 */
+.mock-answer-toggle {
+  width: 100%;
+  padding: 10px 14px;
+  background: #fff3cd;
+  color: #78350f;
+  border: 1.5px dashed #d97706;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.mock-answer-toggle:hover {
+  background: #fde68a;
+  border-style: solid;
+}
+.mock-answer-toggle.open {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  border-style: solid;
+}
+
+/* 답안 패널 */
+.mock-answer-panel {
+  margin-top: 10px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid var(--color-primary-light);
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.85;
+  color: #1f2937;
+  animation: answerReveal 0.25s ease-out;
+}
+@keyframes answerReveal {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mock-answer-heading {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 15px;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed #e2e6ed;
+}
+.mock-answer-heading:first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+.mock-answer-line {
+  margin: 2px 0;
+  white-space: pre-wrap;
+}
+.mock-answer-end {
+  margin-top: 12px;
+  text-align: right;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .mock-session-block { padding: 14px 16px; }
+  .mock-q-text { font-size: 14px; }
+  .mock-answer-panel { padding: 14px; font-size: 13.5px; }
+}
+

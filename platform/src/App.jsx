@@ -12,6 +12,7 @@ const TrendPage = lazy(() => import('./pages/TrendPage.jsx'));
 const SearchPage = lazy(() => import('./pages/SearchPage.jsx'));
 const GuidelinesPage = lazy(() => import('./pages/GuidelinesPage.jsx'));
 const GuidelineDetailPage = lazy(() => import('./pages/GuidelineDetailPage.jsx'));
+const MockExamPage = lazy(() => import('./pages/MockExamPage.jsx'));
 
 const PageLoading = () => (
   <div className="loading">페이지 로딩 중...</div>
@@ -32,6 +33,7 @@ export default function App() {
             <NavLink to="/trends" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>출제경향</NavLink>
             <NavLink to="/guidelines" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>이론학습</NavLink>
             <NavLink to="/search" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>검색</NavLink>
+            <NavLink to="/mock-exam" className={({isActive}) => isActive ? 'nav-link nav-link-mock active' : 'nav-link nav-link-mock'}>🎯 모의고사</NavLink>
           </nav>
         </div>
       </header>
@@ -46,6 +48,7 @@ export default function App() {
             <Route path="/guidelines" element={<GuidelinesPage />} />
             <Route path="/guidelines/:slug" element={<GuidelineDetailPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/mock-exam" element={<MockExamPage />} />
           </Routes>
         </Suspense>
       </main>

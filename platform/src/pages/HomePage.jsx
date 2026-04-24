@@ -11,6 +11,16 @@ export default function HomePage() {
       <h1 className="page-title">도시계획기술사 기출문제 플랫폼</h1>
       <p className="page-subtitle">130 ~ 138회 기출문제 {totalQuestions}개 · 핵심요약·심화 답안 · 출제경향 분석을 한 곳에서</p>
 
+      {/* 2026 모의고사 프로모 배너 */}
+      <Link to="/mock-exam" className="mock-promo-banner">
+        <div className="mock-promo-icon">🎯</div>
+        <div className="mock-promo-body">
+          <div className="mock-promo-title">2026 모의고사 제1회 — 예상문제 풀어보기</div>
+          <div className="mock-promo-sub">최신 법령 개정·정책 이슈 기반 31문제 · 1~4교시 전체 · 심화답안 포함</div>
+        </div>
+        <div className="mock-promo-arrow">→</div>
+      </Link>
+
       <div className="grid grid-stats" style={{marginBottom: 24}}>
         <StatCard label="총 기출문제" value={totalQuestions} sub="130~138회 1~4교시 전체" />
         <StatCard label="수록 회차" value="9회차" sub={`${ROUNDS[0]}회 ~ ${ROUNDS[ROUNDS.length-1]}회`} />

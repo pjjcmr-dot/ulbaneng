@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 4173"
+    "preview": "vite preview --port 4173",
+    "postinstall": "node scripts/patch-rollup-wasm.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -16,7 +17,11 @@
     "urban-planning-exam-platform": "file:.."
   },
   "devDependencies": {
+    "@rollup/wasm-node": "^4.60.2",
     "@vitejs/plugin-react": "^4.3.1",
     "vite": "^5.4.2"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@^4.60.2"
   }
 }
