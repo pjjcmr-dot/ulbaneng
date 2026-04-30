@@ -61,12 +61,18 @@ export default function MockExamPage() {
 
       {/* 2026년 법령 개정 업데이트 요약 */}
       <details className="mock-law-updates">
-        <summary>📜 2026년 4월 기준 주요 법령·정책 업데이트 (웹 검증 반영)</summary>
+        <summary>📜 2026년 4월 기준 주요 법령·정책 업데이트 (법제처 직접 검증 ✓)</summary>
         <div className="mock-law-updates-body">
+          <p style={{margin: '0 0 10px 0', fontSize: '12.5px', color: '#15803d', fontWeight: 600}}>
+            ※ 본 정리는 <a href="https://www.law.go.kr" target="_blank" rel="noreferrer">국가법령정보센터(law.go.kr)</a>의 현행 법령 본문을 직접 조회·검증한 결과입니다.
+          </p>
           <ul>
             <li><strong>AI 기본법</strong>: 2024.12.26 제정 → <strong>2026.1.22 시행</strong> (EU AI Act 이어 세계 2번째 포괄 규제 / 국가인공지능위원회 대통령 직속)</li>
             <li><strong>공공기여 가이드라인</strong>: 국토부 <strong>2025.3.26 확정·배포</strong> (부담 한도 <strong>지가 상승분의 70% 이내</strong> / 평가시점 표준화)</li>
-            <li><strong>노후계획도시 특별법 시행령</strong>: <strong>2025.12.30 개정, 2026.1.2 시행</strong> (선도지구 지정 4대 고려사항 명시)</li>
+            <li><strong>노후계획도시 특별법</strong>: 본법 <strong>2026.2.3 일부개정 시행</strong>(법률 제21322호) + 시행령 <strong>2026.1.2 시행</strong>(선도지구 지정 4대 고려사항 명시)</li>
+            <li><strong>도정법 재건축진단</strong>: <strong>2026.1.2 시행</strong>(법률 제21065호) — 안전진단 → <strong>재건축진단</strong> 명칭 변경, 사업시행계획인가 전까지 실시 (도정법 제12조 직접 확인)</li>
+            <li><strong>국토계획법 공간혁신 3구역(법제처 직접 확인)</strong>: <strong>제40조의3 도시혁신구역</strong> · <strong>제40조의4 복합용도구역</strong> · <strong>제40조의5 입체복합구역</strong> (시행 2026.1.2 법률 제21065호)</li>
+            <li><strong>경관법(법제처 직접 확인)</strong>: <strong>제16조 = 경관사업</strong>, <strong>제19조 = 경관협정</strong> (시행 2025.10.1 법률 제21065호)</li>
             <li><strong>1기 신도시 선도지구</strong>: <strong>2024.11.27 15곳 3.6만호 지정</strong> (분당 3곳 10,948 / 일산 3곳 8,912 / 평촌·산본·중동 9곳)</li>
             <li><strong>철도지하화 통합개발 특별법</strong>: 2024.1.30 제정 → <strong>2025.1.31 시행</strong> (시행령 제35233호, 시행규칙 국토부령 제1445호)</li>
             <li><strong>도심복합개발 지원법 시행령</strong>: <strong>2025.2.7 시행</strong> (성장거점형·주거중심형 / 준주거 용적률 140%까지)</li>
