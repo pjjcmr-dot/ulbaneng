@@ -9,6 +9,8 @@ import cityGunMgmt from '@data/guideline-city-gun-management-plan.json';
 import landscape from '@data/guideline-landscape-plan.json';
 import urbanRegen from '@data/guideline-urban-regeneration.json';
 import publicContrib from '@data/guideline-public-contribution.json';
+import lawSystem from '@data/guideline-law-system.json';
+import LawSystemMasterVisual from '../components/LawSystemMasterVisual';
 
 const GUIDELINE_MAP = {
   'district-unit-plan': districtUnit,
@@ -16,7 +18,8 @@ const GUIDELINE_MAP = {
   'city-gun-management-plan': cityGunMgmt,
   'landscape-plan': landscape,
   'urban-regeneration': urbanRegen,
-  'public-contribution': publicContrib
+  'public-contribution': publicContrib,
+  'law-system': lawSystem
 };
 
 export default function GuidelineDetailPage() {
@@ -225,6 +228,13 @@ export default function GuidelineDetailPage() {
                     {sec.body && (
                       <p className="section-body">{renderMarkdown(sec.body)}</p>
                     )}
+                    {sec.visual === 'law-system-master' && <LawSystemMasterVisual />}
+                    {sec.diagrams && sec.diagrams.length > 0 && sec.diagrams.map((d, di) => (
+                      <React.Fragment key={di}>
+                        {d.title && <div className="section-diagram-title">{d.title}</div>}
+                        <pre className="section-diagram">{d.ascii}</pre>
+                      </React.Fragment>
+                    ))}
                     {sec.points && sec.points.length > 0 && (
                       <ul className="section-points">
                         {sec.points.map((p, i) => (

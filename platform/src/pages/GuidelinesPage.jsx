@@ -16,7 +16,7 @@ export default function GuidelinesPage() {
       <div className="guidelines-grid">
         {guidelines.map(g => (
           <Link
-            to={`/guidelines/${g.slug}`}
+            to={g.external || `/guidelines/${g.slug}`}
             key={g.slug}
             className="guideline-card"
             style={{ '--card-accent': g.color }}

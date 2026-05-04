@@ -13,6 +13,7 @@ const SearchPage = lazy(() => import('./pages/SearchPage.jsx'));
 const GuidelinesPage = lazy(() => import('./pages/GuidelinesPage.jsx'));
 const GuidelineDetailPage = lazy(() => import('./pages/GuidelineDetailPage.jsx'));
 const MockExamPage = lazy(() => import('./pages/MockExamPage.jsx'));
+const LawSystemOrgChartPage = lazy(() => import('./pages/LawSystemOrgChartPage.jsx'));
 
 const PageLoading = () => (
   <div className="loading">페이지 로딩 중...</div>
@@ -49,6 +50,7 @@ export default function App() {
             <Route path="/guidelines/:slug" element={<GuidelineDetailPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/mock-exam" element={<MockExamPage />} />
+            <Route path="/law-chart" element={<LawSystemOrgChartPage />} />
           </Routes>
         </Suspense>
       </main>
