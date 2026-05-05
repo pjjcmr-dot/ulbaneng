@@ -73,9 +73,9 @@ const TIER6 = {
         '광역도시계획수립지침',
         '도시·군기본계획수립지침 (1694)',
         '도시·군관리계획수립지침 (1901)',
-        '지구단위계획수립지침 (1768)',
+        '★ 지구단위계획수립지침 (1768)',
         '공간재구조화계획수립지침',
-        '경관계획수립지침',
+        '★ 경관계획수립지침',
         '도시재생전략·활성화계획수립지침',
         '정비기본계획수립지침'
       ]
@@ -123,6 +123,41 @@ const TIER7 = {
     '도시재생 활성화 지원 조례'
   ]
 };
+
+const FREQ_TIERS = [
+  {
+    level: '★★★★',
+    label: '필수 암기 · 매회 출제',
+    variant: 'top',
+    items: [
+      { name: '국토계획법 + 시행령', detail: '용도지역·건폐율·용적률·도시계획시설', lookup: '국토계획법' },
+      { name: '지구단위계획수립지침', detail: '특별계획구역·공공기여·공간혁신구역', lookup: '지구단위계획수립지침' },
+      { name: '공공기여 가이드라인', detail: '2025.3.26 신규·지가상승 70% 한도', lookup: '공공기여 가이드라인' }
+    ]
+  },
+  {
+    level: '★★★',
+    label: '자주 출제',
+    variant: 'mid',
+    items: [
+      { name: '도정법', detail: '재개발·재건축', lookup: '도정법' },
+      { name: '노후계획도시법', detail: '1기 신도시 (2024 신규)', lookup: '노후계획도시법' },
+      { name: '경관법 + 경관계획수립지침', detail: '경관기본원칙 6원칙', lookup: '경관법' },
+      { name: '환경영향평가법', detail: '18종 사업 평가', lookup: '환경영향평가법' },
+      { name: '도시재생법', detail: '활성화지역·인정사업', lookup: '도시재생법' }
+    ]
+  },
+  {
+    level: '★★',
+    label: '가끔 출제',
+    variant: 'low',
+    items: [
+      { name: '토지보상법·GB법', detail: '공익사업 8종·그린벨트', lookup: '토지보상법' },
+      { name: '도시개발법·빈집법', detail: '도시개발사업·소규모정비', lookup: '도시개발법' },
+      { name: '도시·주거환경정비 기본방침', detail: '도정법 제3조 (10년)', lookup: '도시·주거환경정비 기본방침' }
+    ]
+  }
+];
 
 const NEW_LAWS_BY_YEAR = [
   {
@@ -231,6 +266,42 @@ function isCategory(summary) {
   return summary && summary.type && summary.type.includes('카테고리');
 }
 
+// 법제처 (law.go.kr) 바로가기 URL 생성
+function getLawGoKrUrl(summary) {
+  if (!summary) return null;
+  const type = summary.type || '';
+  const name = summary.formal || summary.key;
+  if (!name) return null;
+
+  // 카테고리·정부조직 개편·계획 단계 — 직접 법령 페이지 없음
+  if (type.includes('카테고리') || type.includes('정부조직') || type.includes('계획 단계')) {
+    return null;
+  }
+
+  // 허가·집행 단계 — formal에서 부모 법명 추출
+  if (type.includes('허가') || type.includes('집행 단계')) {
+    const m = name.match(/\(([^)]+?(?:법|법률))\s/);
+    if (m) {
+      return `https://www.law.go.kr/법령/${encodeURIComponent(m[1].trim())}`;
+    }
+    return null;
+  }
+
+  // 행정규칙 (수립지침·가이드라인·평가고시·기본방침)
+  if (type.includes('행정규칙') || type.includes('수립지침') ||
+      type.includes('가이드라인') || type.includes('평가고시')) {
+    return `https://www.law.go.kr/행정규칙/${encodeURIComponent(name)}`;
+  }
+
+  // 자치법규 (조례·규칙)
+  if (type.includes('자치법규') || type.includes('조례')) {
+    return `https://www.law.go.kr/자치법규/${encodeURIComponent(name)}`;
+  }
+
+  // 기본: 법률·시행령·시행규칙 모두 /법령/
+  return `https://www.law.go.kr/법령/${encodeURIComponent(name)}`;
+}
+
 function HRoot({ variant, tier, name, meta }) {
   return (
     <div className={`hb hb--root ${variant}`}>
@@ -241,10 +312,20 @@ function HRoot({ variant, tier, name, meta }) {
   );
 }
 
-function HBranch({ variant, name, meta }) {
+function HBranch({ variant, name, meta, onClick, collapsed }) {
+  const isToggle = onClick !== undefined;
   return (
-    <div className={`hb hb--branch ${variant}`}>
-      <div className="hb-name">{name}</div>
+    <div
+      className={`hb hb--branch ${variant}${isToggle ? ' hb--toggle' : ''}`}
+      onClick={onClick}
+      role={isToggle ? 'button' : undefined}
+      tabIndex={isToggle ? 0 : undefined}
+      onKeyDown={isToggle ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } : undefined}
+    >
+      <div className="hb-name">
+        {isToggle && <span className="hb-toggle-icon">{collapsed ? '▶' : '▼'}</span>}
+        {name}
+      </div>
       {meta && <div className="hb-meta">{meta}</div>}
     </div>
   );
@@ -285,15 +366,174 @@ function ColumnLeavesOnly({ leaves, variant, onLeafClick }) {
   );
 }
 
-function ColumnBranches({ branches, branchVariant, leafVariant, onLeafClick }) {
+function ColumnBranches({ branches, branchVariant, leafVariant, onLeafClick, expandedBranchIndex }) {
+  const [branchCollapsed, setBranchCollapsed] = useState(() => {
+    // 분야별 특별법(expandedBranchIndex)은 기본 접힘 상태로 시작
+    return expandedBranchIndex !== undefined ? { [expandedBranchIndex]: true } : {};
+  });
+  const toggleBranch = (i) => setBranchCollapsed(prev => ({ ...prev, [i]: !prev[i] }));
+
   return (
     <div className="h-branches">
-      {branches.map((b, i) => (
-        <div key={i} className="h-branch-group">
-          <HBranch variant={branchVariant} name={b.name} meta={b.meta} />
-          <div className="h-leaves h-leaves--small">
-            {b.leaves.map((l, j) => (
-              <HLeaf key={j} variant={leafVariant} name={l} onClick={() => onLeafClick(l)} />
+      {branches.map((b, i) => {
+        const isExpanded = i === expandedBranchIndex;
+        const collapsed = !!branchCollapsed[i];
+        const canToggle = isExpanded;
+
+        return (
+          <div key={i} className="h-branch-group">
+            <HBranch
+              variant={branchVariant}
+              name={b.name}
+              meta={b.meta}
+              onClick={canToggle ? () => toggleBranch(i) : undefined}
+              collapsed={collapsed}
+            />
+            {!collapsed && (
+              isExpanded ? (
+                <ExpandedCategoryList categories={b.leaves} onLawClick={onLeafClick} />
+              ) : (
+                <div className="h-leaves h-leaves--small">
+                  {b.leaves.map((l, j) => (
+                    <HLeaf key={j} variant={leafVariant} name={l} onClick={() => onLeafClick(l)} />
+                  ))}
+                </div>
+              )
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ExpandedCategoryList({ categories, onLawClick }) {
+  // 11개 카테고리 모두 기본 접힘 상태로 시작
+  const [catCollapsed, setCatCollapsed] = useState(() => {
+    const init = {};
+    categories.forEach((_, i) => { init[i] = true; });
+    return init;
+  });
+  const toggleCat = (i) => setCatCollapsed(prev => ({ ...prev, [i]: !prev[i] }));
+
+  return (
+    <div className="h-cat-list">
+      {categories.map((catName, i) => {
+        const entry = lookupSummary(catName);
+        const laws = entry?.composition || [];
+        const collapsed = !!catCollapsed[i];
+        return (
+          <div key={i} className={`h-cat-card${collapsed ? ' h-cat-card--collapsed' : ''}`}>
+            <div className="h-cat-card-title" onClick={() => toggleCat(i)} role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCat(i); } }}>
+              <span className="h-cat-card-arrow">{collapsed ? '▶' : '▼'}</span>
+              <span className="h-cat-card-name">{catName}</span>
+              <button
+                type="button"
+                className="h-cat-card-detail"
+                onClick={(e) => { e.stopPropagation(); onLawClick(catName); }}
+                title="카테고리 상세 보기"
+              >ℹ︎</button>
+            </div>
+            {!collapsed && (
+              <div className="h-cat-card-laws">
+                {laws.map((c, j) => {
+                  const m = c.match(/^([^—\-]+?)\s*[—\-]\s*(.+)$/);
+                  const lawName = m ? m[1].trim() : c;
+                  const desc = m ? m[2].trim() : '';
+                  const hasDetail = !!lookupSummary(lawName);
+                  return (
+                    <div
+                      key={j}
+                      className={`h-cat-law${hasDetail ? ' h-cat-law--clickable' : ''}`}
+                      onClick={hasDetail ? () => onLawClick(lawName) : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabIndex={hasDetail ? 0 : undefined}
+                      onKeyDown={hasDetail ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onLawClick(lawName); } } : undefined}
+                    >
+                      <span className="h-cat-law-name">{lawName}</span>
+                      {desc && <span className="h-cat-law-desc"> — {desc}</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+const DOJUNG_PHASES = [
+  {
+    phase: '정책', icon: '🏛', color: 'red',
+    steps: [
+      { num: 1, name: '도시·주거환경정비 기본방침', actor: '국토교통부장관', meta: '10년 단위 / 5년 검토 (제3조)', unique: true }
+    ]
+  },
+  {
+    phase: '계획', icon: '📋', color: 'blue',
+    steps: [
+      { num: 2, name: '도시·주거환경정비 기본계획', actor: '시·도지사', meta: '10년 / 5년 재검토 (제4조)' },
+      { num: 3, name: '정비계획 + 정비구역 지정', actor: '시·군·구청장', meta: '구역 지정·고시 (제8조)' }
+    ]
+  },
+  {
+    phase: '사업·인가', icon: '⚙️', color: 'purple',
+    steps: [
+      { num: 4, name: '조합 설립인가', actor: '조합', meta: '토지등소유자 3/4 동의 (제35조)' },
+      { num: 5, name: '사업시행계획 인가', actor: '조합 → 시·군·구청장', meta: '제50조 ★ 핵심', star: true },
+      { num: 6, name: '관리처분계획 인가', actor: '조합 → 시·군·구청장', meta: '제74조 ★ 핵심', star: true }
+    ]
+  },
+  {
+    phase: '시공·준공', icon: '🏗️', color: 'green',
+    steps: [
+      { num: 7, name: '시공·준공·이전등기', actor: '조합·시공자', meta: '제83조 등' }
+    ]
+  }
+];
+
+const KOOKTO_PHASES = [
+  {
+    phase: '계획', icon: '📋', color: 'blue',
+    steps: [
+      { num: 1, name: '광역도시계획', actor: '광역단체', meta: '20년 / 5년' },
+      { num: 2, name: '도시·군기본계획', actor: '시·군·구', meta: '20년 (제18조)' },
+      { num: 3, name: '도시·군관리계획', actor: '시·군·구', meta: '5년 재정비 (제24조)' },
+      { num: 4, name: '지구단위계획', actor: '시·군·구', meta: '제49조' }
+    ]
+  },
+  {
+    phase: '집행', icon: '🏗️', color: 'orange',
+    steps: [
+      { num: 5, name: '개발행위·건축허가', actor: '시·군·구청장', meta: '제56조 / 건축법' },
+      { num: 6, name: '준공검사·사용승인', actor: '시·군·구청장', meta: '' }
+    ]
+  }
+];
+
+function DoJungPhaseTimeline({ phases, totalSteps }) {
+  return (
+    <div className="djp-timeline">
+      {phases.map((p, pi) => (
+        <div key={pi} className={`djp-phase djp-phase--${p.color}`}>
+          <div className="djp-phase-head">
+            <span className="djp-phase-icon">{p.icon}</span>
+            <span className="djp-phase-label">{p.phase}</span>
+          </div>
+          <div className="djp-steps">
+            {p.steps.map((s, si) => (
+              <div key={si} className={`djp-step${s.unique ? ' djp-step--unique' : ''}${s.star ? ' djp-step--star' : ''}`}>
+                {s.unique && <div className="djp-step-badge">★ 도정법 고유 ★</div>}
+                <div className="djp-step-num">{s.num}</div>
+                <div className="djp-step-content">
+                  <div className="djp-step-actor">{s.actor}</div>
+                  <div className="djp-step-name">{s.name}</div>
+                  {s.meta && <div className="djp-step-meta">{s.meta}</div>}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -302,9 +542,142 @@ function ColumnBranches({ branches, branchVariant, leafVariant, onLeafClick }) {
   );
 }
 
+function DoJungHierarchyDiagram() {
+  return (
+    <div className="dojung-diagram">
+      <div className="dojung-diff-note">
+        <strong>💡 도정법 vs 국토계획법 핵심 차이:</strong> 도정법에는 <span className="dojung-key">「기본방침」</span> (국토부장관 · 제3조)이 별도로 존재 —
+        정비사업의 <strong>국가 차원 정책 우산</strong>. 국토계획법은 광역도시계획부터 시작 (해당 단계 없음).
+      </div>
+
+      <div className="dojung-comparison">
+        <div className="dojung-side dojung-side--main">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag">📍 도정법</span>
+            <span className="dojung-side-title">정비사업 — 7단계 / 4 Phase</span>
+          </div>
+          <DoJungPhaseTimeline phases={DOJUNG_PHASES} />
+        </div>
+        <div className="dojung-side dojung-side--ref">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag dojung-side-tag--ref">📋 국토계획법</span>
+            <span className="dojung-side-title">참고 — 6단계 / 2 Phase</span>
+          </div>
+          <DoJungPhaseTimeline phases={KOOKTO_PHASES} />
+        </div>
+      </div>
+
+      <div className="dojung-summary-grid">
+        <div className="dojung-summary-card dojung-summary-card--key">
+          <div className="dojung-summary-card-head">🔑 도정법 고유</div>
+          <div className="dojung-summary-card-body">
+            <strong>기본방침</strong> (국토부장관, 10년 / 5년 검토)<br />
+            정비사업의 국가 정책 방향 제시
+          </div>
+        </div>
+        <div className="dojung-summary-card dojung-summary-card--plan">
+          <div className="dojung-summary-card-head">📊 3단계 계획 위계</div>
+          <div className="dojung-summary-card-body">
+            기본방침(국토부) → 기본계획(시·도) → 정비계획(기초)
+          </div>
+        </div>
+        <div className="dojung-summary-card dojung-summary-card--biz">
+          <div className="dojung-summary-card-head">⚙️ 4단계 사업 절차</div>
+          <div className="dojung-summary-card-body">
+            조합 설립 → <strong>사업시행인가</strong>(제50조) → <strong>관리처분</strong>(제74조) → 준공
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CustomDiagram({ name }) {
+  if (name === 'dojung-hierarchy') return <DoJungHierarchyDiagram />;
+  return null;
+}
+
+function KeyDetailRenderer({ detail }) {
+  if (!detail) return null;
+  const { type } = detail;
+
+  if (type === 'article') {
+    return (
+      <div className="kd kd--article">
+        {detail.title && <div className="kd-title">📜 {detail.title}</div>}
+        <blockquote className="kd-article-text">{detail.text}</blockquote>
+        {detail.commentary && <div className="kd-commentary">💡 {detail.commentary}</div>}
+      </div>
+    );
+  }
+
+  if (type === 'comparison') {
+    return (
+      <div className="kd kd--comparison">
+        {detail.title && <div className="kd-title">📊 {detail.title}</div>}
+        <div className="kd-table-wrap">
+          <table className="kd-table">
+            <thead>
+              <tr>
+                {detail.columns.map((c, i) => <th key={i}>{c}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {detail.rows.map((row, i) => (
+                <tr key={i}>
+                  {row.map((cell, j) => <td key={j} dangerouslySetInnerHTML={{ __html: cell }} />)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {detail.note && <div className="kd-note">📌 {detail.note}</div>}
+      </div>
+    );
+  }
+
+  if (type === 'process') {
+    return (
+      <div className="kd kd--process">
+        {detail.title && <div className="kd-title">🔄 {detail.title}</div>}
+        <ol className="kd-steps">
+          {detail.steps.map((s, i) => (
+            <li key={i} className="kd-step">
+              <strong>{s.label}</strong>
+              {s.desc && <div className="kd-step-desc">{s.desc}</div>}
+            </li>
+          ))}
+        </ol>
+        {detail.note && <div className="kd-note">📌 {detail.note}</div>}
+      </div>
+    );
+  }
+
+  // type: 'explanation' or default
+  return (
+    <div className="kd kd--explanation">
+      {detail.title && <div className="kd-title">💬 {detail.title}</div>}
+      {detail.text && <div className="kd-text">{detail.text}</div>}
+      {detail.points && (
+        <ul className="kd-points">
+          {detail.points.map((p, i) => <li key={i}>{p}</li>)}
+        </ul>
+      )}
+      {detail.article && (
+        <blockquote className="kd-article-text">{detail.article}</blockquote>
+      )}
+      {detail.note && <div className="kd-note">📌 {detail.note}</div>}
+    </div>
+  );
+}
+
 function SummaryModal({ leafName, onClose, onSelectLaw, onBack }) {
+  const [openKey, setOpenKey] = useState(null);
   const summary = lookupSummary(leafName);
   const display = leafName.startsWith('★ ') ? leafName.substring(2) : leafName;
+
+  // 다른 법령으로 전환 시 펼친 핵심내용 리셋
+  useEffect(() => { setOpenKey(null); }, [leafName]);
 
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose(); };
@@ -331,7 +704,20 @@ function SummaryModal({ leafName, onClose, onSelectLaw, onBack }) {
             )}
             {summary?.enacted && <div className="lsmodal-enacted">📅 제정/시행 — {summary.enacted}</div>}
           </div>
-          <button onClick={onClose} className="lsmodal-close" aria-label="닫기">✕</button>
+          <div className="lsmodal-head-actions">
+            {getLawGoKrUrl(summary) && (
+              <a
+                href={getLawGoKrUrl(summary)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lsmodal-lawgokr"
+                title="법제처(law.go.kr)에서 원문 보기"
+              >
+                ⚖️ 법제처 <span className="lsmodal-lawgokr-arr">↗</span>
+              </a>
+            )}
+            <button onClick={onClose} className="lsmodal-close" aria-label="닫기">✕</button>
+          </div>
         </div>
         <div className="lsmodal-body">
           {!summary && (
@@ -384,11 +770,39 @@ function SummaryModal({ leafName, onClose, onSelectLaw, onBack }) {
                   )}
                 </div>
               )}
+              {summary.customDiagram && (
+                <div className="lsmodal-section">
+                  <h4>📊 위계 도식</h4>
+                  <CustomDiagram name={summary.customDiagram} />
+                </div>
+              )}
               {summary.keys && summary.keys.length > 0 && (
                 <div className="lsmodal-section">
-                  <h4>★ 핵심 내용</h4>
+                  <h4>★ 핵심 내용 <span className="lsmodal-hint">(클릭 시 상세 해설)</span></h4>
                   <ul className="lsmodal-list lsmodal-list--keys">
-                    {summary.keys.map((k, i) => <li key={i}>{k}</li>)}
+                    {summary.keys.map((k, i) => {
+                      const detail = summary.keyDetails && summary.keyDetails[k];
+                      const isOpen = openKey === i;
+                      return (
+                        <li key={i} className={detail ? 'lsmodal-key-item lsmodal-key-item--clickable' : 'lsmodal-key-item'}>
+                          <div
+                            className="lsmodal-key-label"
+                            onClick={detail ? () => setOpenKey(isOpen ? null : i) : undefined}
+                            role={detail ? 'button' : undefined}
+                            tabIndex={detail ? 0 : undefined}
+                            onKeyDown={detail ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpenKey(isOpen ? null : i); } } : undefined}
+                          >
+                            <span>{k}</span>
+                            {detail && <span className="lsmodal-key-arr">{isOpen ? '▼' : '▶'}</span>}
+                          </div>
+                          {isOpen && detail && (
+                            <div className="lsmodal-key-detail">
+                              <KeyDetailRenderer detail={detail} />
+                            </div>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -396,7 +810,23 @@ function SummaryModal({ leafName, onClose, onSelectLaw, onBack }) {
                 <div className="lsmodal-section">
                   <h4>🔗 관련 법령</h4>
                   <div className="lsmodal-tags">
-                    {summary.related.map((r, i) => <span key={i} className="lsmodal-tag">{r}</span>)}
+                    {summary.related.map((r, i) => {
+                      const hasDetail = !!lookupSummary(r);
+                      return (
+                        <span
+                          key={i}
+                          className={`lsmodal-tag${hasDetail ? ' lsmodal-tag--clickable' : ''}`}
+                          onClick={hasDetail ? () => onSelectLaw(r) : undefined}
+                          role={hasDetail ? 'button' : undefined}
+                          tabIndex={hasDetail ? 0 : undefined}
+                          onKeyDown={hasDetail ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectLaw(r); } } : undefined}
+                          title={hasDetail ? `${r} 상세 보기` : r}
+                        >
+                          {r}
+                          {hasDetail && <span className="lsmodal-tag-arr">→</span>}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -431,13 +861,14 @@ export default function LawSystemOrgChartHorizontal() {
         <HArrow />
 
         {/* Tier 1~3 */}
-        <div className="orgh-col orgh-col--wide">
+        <div className="orgh-col orgh-col--xwide">
           <HRoot variant="hb--t123" tier="Tier 1~3" name={TIER123.name} meta={TIER123.meta} />
           <ColumnBranches
             branches={TIER123.branches}
             branchVariant="hb--branch-law"
             leafVariant="hb--leaf-law"
             onLeafClick={setSelectedLeaf}
+            expandedBranchIndex={2}
           />
         </div>
         <HArrow />
@@ -487,7 +918,50 @@ export default function LawSystemOrgChartHorizontal() {
         </div>
       </div>
 
-      {/* 2023~2026 신규 법령·지침 타임라인 (우측 하단) */}
+      {/* 하단 좌우 패널: 출제 빈도 참조 + 신규 법령 타임라인 */}
+      <div className="orgh-bottom-row">
+
+      {/* 출제 빈도 참조 (좌측) */}
+      <div className="orgh-freq-panel">
+        <div className="orgh-freq-header">
+          <span className="orgh-freq-tag">시험 빈도</span>
+          <span className="orgh-freq-title">📊 도시계획기술사 출제 빈도</span>
+          <span className="orgh-freq-sub">130~138회 기준</span>
+        </div>
+        <div className="orgh-freq-grid">
+          {FREQ_TIERS.map((t, i) => (
+            <div key={i} className={`orgh-freq-tier-block orgh-freq-tier-block--${t.variant}`}>
+              <div className="orgh-freq-tier-head">
+                <span className="orgh-freq-tier-level">{t.level}</span>
+                <span className="orgh-freq-tier-label">{t.label}</span>
+              </div>
+              <ul className="orgh-freq-list">
+                {t.items.map((it, j) => {
+                  const hasDetail = !!lookupSummary(it.lookup);
+                  return (
+                    <li
+                      key={j}
+                      className={`orgh-freq-item${hasDetail ? ' orgh-freq-item--clickable' : ''}`}
+                      onClick={hasDetail ? () => setSelectedLeaf(it.lookup) : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabIndex={hasDetail ? 0 : undefined}
+                      onKeyDown={hasDetail ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedLeaf(it.lookup); } } : undefined}
+                    >
+                      <div className="orgh-freq-item-name">
+                        {it.name}
+                        {hasDetail && <span className="orgh-freq-item-arrow">→</span>}
+                      </div>
+                      {it.detail && <div className="orgh-freq-item-detail">{it.detail}</div>}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 2023~2026 신규 법령·지침 타임라인 (우측) */}
       <div className="orgh-news-panel">
         <div className="orgh-news-header">
           <span className="orgh-news-tier">2023 → 현재</span>
@@ -524,6 +998,8 @@ export default function LawSystemOrgChartHorizontal() {
           ))}
         </div>
       </div>
+
+      </div>{/* /orgh-bottom-row */}
 
       {currentLeaf && (
         <SummaryModal
