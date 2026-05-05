@@ -19,12 +19,12 @@ const TIER123 = {
       leaves: ['★ 국토계획법', '건축법', '주택법', '수도권정비계획법']
     },
     {
-      name: '분야별 특별법', meta: '11 카테고리 · 50여개',
+      name: '분야별 특별법', meta: '11 카테고리 · 114개 (전수)',
       leaves: [
-        '① 도시개발·재생 (8)', '② 산업·물류 (5)', '③ 주택·주거 (6)',
-        '④ 토지·보상 (6)', '⑤ 시설·기반 (8)', '⑥ 환경·녹지 (9)',
-        '⑦ 농어촌·균형 (4)', '⑧ 경관·문화 (4)', '⑨ 안전·방재 (4)',
-        '⑩ 신산업·특별 (4)', '⑪ 공간정보·측량 (2)'
+        '① 도시개발·재생 (13)', '② 산업·물류 (11)', '③ 주택·주거 (10)',
+        '④ 토지·보상 (11)', '⑤ 시설·기반 (17)', '⑥ 환경·녹지 (21)',
+        '⑦ 농어촌·균형 (7)', '⑧ 경관·문화 (9)', '⑨ 안전·방재 (8)',
+        '⑩ 신산업·특별 (5)', '⑪ 공간정보·측량 (2)'
       ]
     }
   ]
@@ -128,37 +128,37 @@ const NEW_LAWS_BY_YEAR = [
   {
     year: '2023',
     items: [
-      { name: '지방분권균형발전법', meta: '7월 통합 신설' },
-      { name: '도시·군기본계획수립지침 개정', meta: '훈령 1694호 (12.28)' }
+      { name: '지방분권균형발전법', meta: '7월 통합 신설', lookup: '지방분권균형발전법' },
+      { name: '도시·군기본계획수립지침 개정', meta: '훈령 1694호 (12.28)', lookup: '도시·군기본계획수립지침' }
     ]
   },
   {
     year: '2024',
     items: [
-      { name: '노후계획도시법', meta: '4월 시행 — 1기 신도시', star: true },
-      { name: '농촌공간재구조화법', meta: '3월 시행' },
-      { name: '공간혁신구역 (국계법 개정)', meta: '8월 시행', star: true },
-      { name: '지구단위계획수립지침 개정', meta: '훈령 1768호 (5.20)' },
-      { name: '경관심의 운영 가이드라인', meta: '국토부 (2024)' }
+      { name: '노후계획도시법', meta: '4월 시행 — 1기 신도시', star: true, lookup: '노후계획도시법' },
+      { name: '농촌공간재구조화법', meta: '3월 시행', lookup: '농촌공간재구조화법' },
+      { name: '공간혁신구역 (국계법 개정)', meta: '8월 시행', star: true, lookup: '국토계획법' },
+      { name: '지구단위계획수립지침 개정', meta: '훈령 1768호 (5.20)', lookup: '지구단위계획수립지침' },
+      { name: '경관심의 운영 가이드라인', meta: '국토부 (2024)', lookup: '경관심의 운영 가이드라인 (2024)' }
     ]
   },
   {
     year: '2025',
     items: [
-      { name: '철도지하화통합개발법', meta: '1.31 시행', star: true },
-      { name: '공공기여 가이드라인', meta: '3.26 확정·전국 배포', star: true },
-      { name: '도심복합개발법', meta: '10.1 시행', star: true },
-      { name: '환경부 → 기후에너지환경부', meta: '10.1 명칭 변경' },
-      { name: '녹색건축 인증 규칙', meta: '10.1 기후환경부령으로 변경' }
+      { name: '철도지하화통합개발법', meta: '1.31 시행', star: true, lookup: '철도지하화통합개발법' },
+      { name: '공공기여 가이드라인', meta: '3.26 확정·전국 배포', star: true, lookup: '공공기여 가이드라인' },
+      { name: '도심복합개발법', meta: '10.1 시행', star: true, lookup: '도심복합개발법' },
+      { name: '환경부 → 기후에너지환경부', meta: '10.1 명칭 변경', lookup: '환경부 → 기후에너지환경부' },
+      { name: '녹색건축 인증 규칙', meta: '10.1 기후환경부령으로 변경', lookup: '녹색건축법' }
     ]
   },
   {
     year: '2026',
     items: [
-      { name: '재건축진단 (도정법 개정)', meta: '1.2 시행 — 구 안전진단' },
-      { name: 'AI기본법', meta: '1.22 시행 — 고영향 AI 8영역', star: true },
-      { name: '도시·군관리계획수립지침 개정', meta: '훈령 1901호 (10.2)' },
-      { name: '도시·군계획평가 운영지침', meta: '10.2 신설 시행', star: true }
+      { name: '재건축진단 (도정법 개정)', meta: '1.2 시행 — 구 안전진단', lookup: '도정법' },
+      { name: 'AI기본법', meta: '1.22 시행 — 고영향 AI 8영역', star: true, lookup: 'AI기본법' },
+      { name: '도시·군관리계획수립지침 개정', meta: '훈령 1901호 (10.2)', lookup: '도시·군관리계획수립지침' },
+      { name: '도시·군계획평가 운영지침', meta: '10.2 신설 시행', star: true, lookup: '도시·군계획평가 운영지침' }
     ]
   }
 ];
@@ -215,7 +215,10 @@ function lookupSummary(rawName) {
   const direct = tryKey(rawName);
   if (direct) return direct;
   // 2) prefix 제거 후 매칭 (★, ①~⑪ 등)
-  const stripped = rawName.replace(/^[★①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]\s*/, '').trim();
+  const stripped = rawName
+    .replace(/^[★①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]\s*/, '')
+    .replace(/\s*\(\d+\)\s*$/, '')
+    .trim();
   if (stripped !== rawName) {
     const fb = tryKey(stripped);
     if (fb) return fb;
@@ -496,12 +499,26 @@ export default function LawSystemOrgChartHorizontal() {
             <div key={y.year} className="orgh-news-year-block">
               <div className="orgh-news-year-badge">{y.year}</div>
               <ul className="orgh-news-list">
-                {y.items.map((it, i) => (
-                  <li key={i} className={it.star ? 'orgh-news-item orgh-news-item--star' : 'orgh-news-item'}>
-                    <div className="orgh-news-item-name">{it.star ? '★ ' : ''}{it.name}</div>
-                    {it.meta && <div className="orgh-news-item-meta">{it.meta}</div>}
-                  </li>
-                ))}
+                {y.items.map((it, i) => {
+                  const hasDetail = it.lookup && lookupSummary(it.lookup);
+                  const cls = `orgh-news-item${it.star ? ' orgh-news-item--star' : ''}${hasDetail ? ' orgh-news-item--clickable' : ''}`;
+                  return (
+                    <li
+                      key={i}
+                      className={cls}
+                      onClick={hasDetail ? () => setSelectedLeaf(it.lookup) : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabIndex={hasDetail ? 0 : undefined}
+                      onKeyDown={hasDetail ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedLeaf(it.lookup); } } : undefined}
+                    >
+                      <div className="orgh-news-item-name">
+                        {it.star ? '★ ' : ''}{it.name}
+                        {hasDetail && <span className="orgh-news-item-arrow">→</span>}
+                      </div>
+                      {it.meta && <div className="orgh-news-item-meta">{it.meta}</div>}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
