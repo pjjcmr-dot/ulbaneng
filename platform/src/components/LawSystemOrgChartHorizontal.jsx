@@ -592,8 +592,216 @@ function DoJungHierarchyDiagram() {
   );
 }
 
+function KooktoYongdoDiagram() {
+  return (
+    <div className="dojung-diagram">
+      <div className="dojung-diff-note">
+        <strong>💡 용도지역(21종) + 용도지구 + 용도구역 — 3중 구조:</strong>
+        용도지역은 <strong>1개만 지정</strong>(기본 골격), 용도지구·용도구역은 <strong>중복 지정 가능</strong>(보완·강화).
+      </div>
+      <div className="dojung-comparison" style={{gridTemplateColumns:'1fr 1fr 1fr'}}>
+        <div className="dojung-side dojung-side--main">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag">🏘 용도지역</span>
+            <span className="dojung-side-title">21종 / 1개만</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--blue">
+              <div className="djp-phase-head"><span className="djp-phase-icon">🏠</span><span className="djp-phase-label">도시지역 16</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">6</div><div className="djp-step-content"><div className="djp-step-actor">주거</div><div className="djp-step-name">전용 1·2 / 일반 1·2·3 / 준</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">4</div><div className="djp-step-content"><div className="djp-step-actor">상업</div><div className="djp-step-name">중심·일반·근린·유통</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">3</div><div className="djp-step-content"><div className="djp-step-actor">공업</div><div className="djp-step-name">전용·일반·준</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">3</div><div className="djp-step-content"><div className="djp-step-actor">녹지</div><div className="djp-step-name">보전·생산·자연</div></div></div>
+              </div>
+            </div>
+            <div className="djp-phase djp-phase--green">
+              <div className="djp-phase-head"><span className="djp-phase-icon">🌳</span><span className="djp-phase-label">비도시 5</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">3</div><div className="djp-step-content"><div className="djp-step-actor">관리</div><div className="djp-step-name">보전·생산·계획</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">1</div><div className="djp-step-content"><div className="djp-step-actor">농림</div><div className="djp-step-name">농림지역</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">1</div><div className="djp-step-content"><div className="djp-step-actor">자연</div><div className="djp-step-name">자연환경보전지역</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dojung-side">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag dojung-side-tag--ref">📌 용도지구</span>
+            <span className="dojung-side-title">보완 · 중복</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--purple">
+              <div className="djp-phase-head"><span className="djp-phase-label">보완</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">경관지구</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">고도지구</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">방화지구·방재지구</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">보호지구</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">취락지구·개발진흥지구</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dojung-side">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag dojung-side-tag--ref">⛔ 용도구역</span>
+            <span className="dojung-side-title">강화·완화</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--red">
+              <div className="djp-phase-head"><span className="djp-phase-label">특별 규제</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">개발제한구역 (GB)</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">시가화조정구역</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">도시자연공원구역</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">수산자원보호구역</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">·</div><div className="djp-step-content"><div className="djp-step-name">공간혁신구역 (2024.8~)</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="dojung-summary-grid">
+        <div className="dojung-summary-card dojung-summary-card--key">
+          <div className="dojung-summary-card-head">📐 적용 원칙</div>
+          <div className="dojung-summary-card-body"><strong>용도지역</strong>은 1개만 / <strong>지구·구역</strong>은 중복 가능</div>
+        </div>
+        <div className="dojung-summary-card dojung-summary-card--plan">
+          <div className="dojung-summary-card-head">📊 효력</div>
+          <div className="dojung-summary-card-body">건폐율·용적률·용도 규제 (시행령 별표)</div>
+        </div>
+        <div className="dojung-summary-card dojung-summary-card--biz">
+          <div className="dojung-summary-card-head">⚖️ 출제 빈도</div>
+          <div className="dojung-summary-card-body">★★★★ — <strong>매회 출제</strong></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GonggiEvaluationDiagram() {
+  return (
+    <div className="dojung-diagram">
+      <div className="dojung-diff-note">
+        <strong>💡 공공기여 가이드라인(2025.3.26) 핵심:</strong>
+        <span className="dojung-key">「부담 한도 = 지가상승분 × 70% 이내」</span>
+        + 평가시점 표준화로 자의적 적용 방지.
+      </div>
+      <div className="dojung-comparison" style={{gridTemplateColumns:'1fr 1fr'}}>
+        <div className="dojung-side dojung-side--main">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag">📍 종전 평가시점</span>
+            <span className="dojung-side-title">기준일 통일</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--blue">
+              <div className="djp-phase-head"><span className="djp-phase-icon">📅</span><span className="djp-phase-label">기준</span></div>
+              <div className="djp-steps">
+                <div className="djp-step djp-step--star"><div className="djp-step-num">★</div><div className="djp-step-content"><div className="djp-step-actor">기준일</div><div className="djp-step-name">계획안 최초 열람·공고 전날</div><div className="djp-step-meta">사업자 자의 적용 방지</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dojung-side dojung-side--main">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag">📍 종후 평가시점</span>
+            <span className="dojung-side-title">기준일 통일</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--green">
+              <div className="djp-phase-head"><span className="djp-phase-icon">📅</span><span className="djp-phase-label">기준</span></div>
+              <div className="djp-steps">
+                <div className="djp-step djp-step--star"><div className="djp-step-num">★</div><div className="djp-step-content"><div className="djp-step-actor">기준일</div><div className="djp-step-name">공공기여 계획 포함 결정·고시일</div><div className="djp-step-meta">투명한 종후 평가</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="dojung-summary-grid">
+        <div className="dojung-summary-card dojung-summary-card--key">
+          <div className="dojung-summary-card-head">💰 부담 한도</div>
+          <div className="dojung-summary-card-body"><strong>지가상승분 × 70%</strong> 이내 (이전: 자의)</div>
+        </div>
+        <div className="dojung-summary-card dojung-summary-card--plan">
+          <div className="dojung-summary-card-head">📋 표준 비율</div>
+          <div className="dojung-summary-card-body">사업유형별 <strong>15~25%</strong> (지구단위 10~20%, 공간혁신 20~25%)</div>
+        </div>
+        <div className="dojung-summary-card dojung-summary-card--biz">
+          <div className="dojung-summary-card-head">🎯 4유형</div>
+          <div className="dojung-summary-card-body">토지·시설·임대주택·현금</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EiaFlowDiagram() {
+  return (
+    <div className="dojung-diagram">
+      <div className="dojung-diff-note">
+        <strong>💡 환경영향평가 3단계 체계:</strong> <span className="dojung-key">전략환경(계획)</span> → 환경영향(사업) → 소규모환경(소규모).
+        단계별 평가로 환경 보호 + 사업 효율 균형.
+      </div>
+      <div className="dojung-comparison" style={{gridTemplateColumns:'1fr 1fr 1fr'}}>
+        <div className="dojung-side dojung-side--main">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag">🌍 전략환경</span>
+            <span className="dojung-side-title">정책·계획</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--blue">
+              <div className="djp-phase-head"><span className="djp-phase-label">상위</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">1</div><div className="djp-step-content"><div className="djp-step-actor">대상</div><div className="djp-step-name">도시·군기본·관리계획·산업단지계획</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">2</div><div className="djp-step-content"><div className="djp-step-actor">특징</div><div className="djp-step-name">대안 비교 의무</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">3</div><div className="djp-step-content"><div className="djp-step-actor">협의</div><div className="djp-step-name">30~60일</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dojung-side">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag dojung-side-tag--ref">🏗 환경영향</span>
+            <span className="dojung-side-title">사업 단계</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--orange">
+              <div className="djp-phase-head"><span className="djp-phase-label">대규모</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">1</div><div className="djp-step-content"><div className="djp-step-actor">대상</div><div className="djp-step-name">18종 사업 (도시·산단·도로 등)</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">2</div><div className="djp-step-content"><div className="djp-step-actor">규모</div><div className="djp-step-name">도시 25만㎡·도로 4km 이상</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">3</div><div className="djp-step-content"><div className="djp-step-actor">사후관리</div><div className="djp-step-name">5년</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="dojung-side">
+          <div className="dojung-side-head">
+            <span className="dojung-side-tag dojung-side-tag--ref">🌱 소규모환경</span>
+            <span className="dojung-side-title">소규모</span>
+          </div>
+          <div className="djp-timeline">
+            <div className="djp-phase djp-phase--green">
+              <div className="djp-phase-head"><span className="djp-phase-label">소규모</span></div>
+              <div className="djp-steps">
+                <div className="djp-step"><div className="djp-step-num">1</div><div className="djp-step-content"><div className="djp-step-actor">대상</div><div className="djp-step-name">도시지역·관리지역 소규모</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">2</div><div className="djp-step-content"><div className="djp-step-actor">규모</div><div className="djp-step-name">도시 1만㎡·관리 5천~3만㎡</div></div></div>
+                <div className="djp-step"><div className="djp-step-num">3</div><div className="djp-step-content"><div className="djp-step-actor">협의</div><div className="djp-step-name">30일</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CustomDiagram({ name }) {
   if (name === 'dojung-hierarchy') return <DoJungHierarchyDiagram />;
+  if (name === 'kookto-yongdo') return <KooktoYongdoDiagram />;
+  if (name === 'gonggi-evaluation') return <GonggiEvaluationDiagram />;
+  if (name === 'eia-flow') return <EiaFlowDiagram />;
   return null;
 }
 
